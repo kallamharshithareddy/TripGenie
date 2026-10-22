@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AI Trip Planner | TripGenie</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/planner.css') }}">
+</head>
+
+<body>
+
+    <nav class="navbar">
+
+        <div class="logo">
+            ✈️ TripGenie <span>AI</span>
+        </div>
+
+        <a href="/" class="back-btn">
+            ← Home
+        </a>
+
+    </nav>
+
+
+    <main class="planner-container">
+
+        <div class="planner-header">
+
+            <p>✨ AI TRAVEL PLANNER</p>
+
+            <h1>
+                Create your perfect trip
+            </h1>
+
+            <span>
+                Tell us about your trip and TripGenie will
+                build a personalized plan for you.
+            </span>
+
+        </div>
+
+
+        <form class="planner-form" method="POST" action="/generate-trip">
+
+            <!-- LOCATION -->
+
+            <div class="form-group">
+
+                <label>📍 Where are you starting from?</label>
+
+                <input
+                    type="text"
+                    name="start_location"
+                    placeholder="Example: Hyderabad"
+                    required>
+
+            </div>
+
+
+            <!-- DESTINATION -->
+
+            <div class="form-group">
+
+                <label>🌎 Where do you want to go?</label>
+
+                <input
+                    type="text"
+                    name="destination"
+                    placeholder="Example: Goa"
+                    required>
+
+            </div>
+
+
+            <div class="form-row">
+
+                <!-- DAYS -->
+
+                <div class="form-group">
+
+                    <label>📅 Number of days</label>
+
+                    <input
+                        type="number"
+                        name="days"
+                        min="1"
+                        max="30"
+                        placeholder="5"
+                        required>
+
+                </div>
+
+
+                <!-- PEOPLE -->
+
+                <div class="form-group">
+
+                    <label>👥 Travelers</label>
+
+                    <input
+                        type="number"
+                        name="travelers"
+                        min="1"
+                        max="20"
+                        value="1"
+                        required>
+
+                </div>
+
+            </div>
+
+
+            <!-- BUDGET -->
+
+            <div class="form-group">
+
+                <label>💰 Your budget (₹)</label>
+
+                <input
+                    type="number"
+                    name="budget"
+                    min="1000"
+                    placeholder="15000"
+                    required>
+
+            </div>
+
+
+            <!-- INTERESTS -->
+
+            <div class="form-group">
+
+                <label>❤️ What do you enjoy?</label>
+
+                <div class="interest-grid">
+
+                    <label class="interest">
+                        <input type="checkbox"
+                               name="interests"
+                               value="beaches">
+                        🏖️ Beaches
+                    </label>
+
+                    <label class="interest">
+                        <input type="checkbox"
+                               name="interests"
+                               value="food">
+                        🍜 Food
+                    </label>
+
+                    <label class="interest">
+                        <input type="checkbox"
+                               name="interests"
+                               value="adventure">
+                        🧗 Adventure
+                    </label>
+
+                    <label class="interest">
+                        <input type="checkbox"
+                               name="interests"
+                               value="nature">
+                        🌲 Nature
+                    </label>
+
+                    <label class="interest">
+                        <input type="checkbox"
+                               name="interests"
+                               value="culture">
+                        🏛️ Culture
+                    </label>
+
+                    <label class="interest">
+                        <input type="checkbox"
+                               name="interests"
+                               value="shopping">
+                        🛍️ Shopping
+                    </label>
+
+                </div>
+
+            </div>
+
+
+            <!-- TRAVEL STYLE -->
+
+            <div class="form-group">
+
+                <label>🚗 Travel style</label>
+
+                <select name="travel_style">
+
+                    <option value="budget">
+                        💰 Budget
+                    </option>
+
+                    <option value="balanced">
+                        ⚖️ Balanced
+                    </option>
+
+                    <option value="luxury">
+                        ✨ Luxury
+                    </option>
+
+                    <option value="adventure">
+                        🧗 Adventure
+                    </option>
+
+                    <option value="relaxed">
+                        🌴 Relaxed
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- SUBMIT -->
+
+            <button type="submit" class="generate-btn">
+
+                ✨ Generate My AI Trip
+
+            </button>
+
+        </form>
+
+    </main>
+
+</body>
+
+</html>

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>TripGenie AI | Smart Travel Planner</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+
+        <div class="logo">
+            ✈️ TripGenie <span>AI</span>
+        </div>
+
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="/planner">AI Planner</a>
+            <a href="#features">Features</a>
+            <a href="#about">About</a> 
+            <a href="/profile" class="profile-btn">👤 Profile </a>
+        </div>
+
+        <a href="/planner" class="nav-btn">
+            Plan My Trip
+        </a>
+
+    </nav>
+
+
+    <!-- HERO SECTION -->
+    <section class="hero">
+
+        <div class="hero-content">
+
+            <div class="badge">
+                ✨ AI-POWERED TRAVEL PLANNER
+            </div>
+            
+            {% if user_name %}
+           <p class="welcome-user">Welcome back, {{ user_name }}! 👋</p>
+            {% endif %}
+            <h1>
+                Your journey.<br>
+                <span>Reimagined by AI.</span>
+            </h1>
+
+            <p>
+                Tell TripGenie your destination, budget and interests.
+                Our AI creates a personalized travel experience just for you.
+            </p>
+
+            <div class="hero-buttons">
+
+                <a href="/planner" class="primary-btn">
+                    ✨ Create My Trip
+                </a>
+
+                <a href="#features" class="secondary-btn">
+                    Explore Features →
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <!-- FLOATING TRAVEL CARD -->
+        <div class="travel-card">
+
+            <div class="card-icon">🌴</div>
+
+            <div>
+                <small>AI suggestion</small>
+                <h3>Go somewhere amazing</h3>
+                <p>Personalized just for you</p>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- FEATURES -->
+    <section class="features" id="features">
+
+        <div class="section-title">
+
+            <p>WHY TRIPGENIE?</p>
+
+            <h2>
+                Everything you need to<br>
+                plan the perfect trip.
+            </h2>
+
+        </div>
+
+
+        <div class="feature-grid">
+
+            <div class="feature-card">
+                <div>🤖</div>
+                <h3>AI Trip Planner</h3>
+                <p>
+                    Create personalized trips based on your
+                    budget, interests and travel style.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <div>🗺️</div>
+                <h3>Smart Itinerary</h3>
+                <p>
+                    Get a day-by-day itinerary with places,
+                    activities and travel time.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <div>💰</div>
+                <h3>Budget Planner</h3>
+                <p>
+                    Track your travel expenses and keep
+                    your trip within budget.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <div>🌦️</div>
+                <h3>Weather Smart</h3>
+                <p>
+                    Adapt your plans according to weather
+                    conditions and forecasts.
+                </p>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ABOUT -->
+    <section class="about" id="about">
+
+        <div>
+
+            <p class="about-label">TRAVEL DIFFERENTLY</p>
+
+            <h2>
+                One platform.<br>
+                Endless adventures.
+            </h2>
+
+            <p>
+                TripGenie combines artificial intelligence,
+                maps, weather and budget planning to create
+                a smarter way to travel.
+            </p>
+
+            <a href="/planner" class="primary-btn">
+                Start Planning →
+            </a>
+
+        </div>
+
+    </section>
+
+
+    <!-- FOOTER -->
+    <footer>
+
+        <h3>✈️ TripGenie AI</h3>
+
+        <p>
+            Your intelligent travel companion.
+        </p>
+
+        <p class="copyright">
+            © 2026 TripGenie AI
+        </p>
+
+    </footer>
+
+</body>
+</html>

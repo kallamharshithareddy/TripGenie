@@ -1,0 +1,1639 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>TripGenie - Your Trip</title>
+
+    <!-- Leaflet CSS -->
+    <link
+        rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    >
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f7f9fc;
+            color: #222;
+        }
+
+        /* ================= NAVBAR ================= */
+
+        .navbar {
+            background: white;
+            padding: 18px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: bold;
+            color: #222;
+        }
+
+        .logo span {
+            color: #ff7a59;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+        }
+
+        /* ================= HERO ================= */
+
+        .hero {
+            padding: 60px 7%;
+            text-align: center;
+            background: linear-gradient(
+                135deg,
+                #fff5ef,
+                #f1f7ff
+            );
+        }
+
+        .hero h1 {
+            font-size: 42px;
+            margin-bottom: 15px;
+        }
+
+        .hero p {
+            color: #666;
+            font-size: 18px;
+        }
+
+        /* ================= CONTAINER ================= */
+
+        .container {
+            width: 86%;
+            max-width: 1200px;
+            margin: 40px auto;
+        }
+
+        /* ================= SUMMARY ================= */
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            margin-bottom: 40px;
+        }
+
+        .summary-card {
+            background: white;
+            padding: 22px;
+            border-radius: 18px;
+            text-align: center;
+            border: 1px solid #eee;
+            box-shadow: 0 5px 18px rgba(0,0,0,0.05);
+        }
+
+        .summary-card h3 {
+            font-size: 14px;
+            color: #777;
+            margin-bottom: 8px;
+        }
+
+        .summary-card p {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        /* ================= SECTION ================= */
+
+        .section {
+            margin-bottom: 45px;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 30px;
+            margin-bottom: 10px;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: #777;
+            margin-bottom: 25px;
+        }
+
+        /* ================= INTERESTS ================= */
+
+        .interest-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .interest {
+            background: white;
+            padding: 12px 18px;
+            border-radius: 25px;
+            border: 1px solid #eee;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.04);
+        }
+
+        /* ================= WEATHER ================= */
+
+        .weather-card {
+            background: linear-gradient(
+                135deg,
+                #eef6ff,
+                #ffffff
+            );
+
+            padding: 30px;
+            border-radius: 22px;
+
+            box-shadow:
+                0 8px 25px rgba(0,0,0,0.06);
+
+            text-align: center;
+        }
+
+        .weather-main {
+            font-size: 48px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .weather-condition {
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+
+        .weather-details {
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+            flex-wrap: wrap;
+        }
+
+        .weather-detail {
+            color: #555;
+        }
+
+        .weather-loading {
+            padding: 35px;
+            color: #666;
+            font-size: 18px;
+        }
+
+        .weather-error {
+            padding: 25px;
+            color: #b00020;
+        }
+
+        /* ================= WEATHER TIP ================= */
+
+        .weather-tip {
+            margin-top: 18px;
+            padding: 18px;
+            background: #fff8e7;
+            border-radius: 15px;
+            text-align: center;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        /* ================= FORECAST ================= */
+
+        .forecast-container {
+            margin-top: 30px;
+        }
+
+        .forecast-title {
+            text-align: center;
+            font-size: 23px;
+            margin-bottom: 20px;
+        }
+
+        .forecast-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 12px;
+        }
+
+        .forecast-card {
+            background: white;
+            padding: 18px 10px;
+            border-radius: 16px;
+            text-align: center;
+            border: 1px solid #eee;
+            transition: 0.3s;
+        }
+
+        .forecast-card:hover {
+            transform: translateY(-4px);
+            box-shadow:
+                0 8px 20px rgba(0,0,0,0.08);
+        }
+
+        .forecast-day {
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+
+        .forecast-condition {
+            font-size: 13px;
+            color: #666;
+            min-height: 35px;
+        }
+
+        .forecast-temp {
+            margin-top: 10px;
+        }
+
+        .max-temp {
+            font-weight: bold;
+        }
+
+        .min-temp {
+            color: #777;
+            margin-left: 5px;
+        }
+
+        /* ================= MAP ================= */
+
+        #map {
+            height: 450px;
+            width: 100%;
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow:
+                0 5px 20px rgba(0,0,0,0.08);
+        }
+
+        /* ================= RECOMMENDATIONS ================= */
+
+        .recommendations-section {
+            margin-top: 45px;
+            margin-bottom: 45px;
+        }
+
+        .recommendation-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+        }
+
+        .recommendation-card {
+            background: white;
+            padding: 25px;
+            border-radius: 18px;
+            border: 1px solid #eee;
+            box-shadow:
+                0 5px 20px rgba(0,0,0,0.06);
+        }
+
+        .recommendation-card h3 {
+            font-size: 21px;
+            margin-bottom: 20px;
+        }
+
+        .place-item {
+            padding: 15px;
+            margin-bottom: 12px;
+            background: #f8f8f8;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .place-item:hover {
+            transform: translateY(-2px);
+            box-shadow:
+                0 5px 12px rgba(0,0,0,0.06);
+        }
+
+        .place-item strong {
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        .place-address {
+            font-size: 13px;
+            color: #777;
+            line-height: 1.5;
+        }
+
+        .loading-text {
+            color: #777;
+            text-align: center;
+            padding: 15px;
+        }
+
+        .error-text {
+            color: #b00020;
+            text-align: center;
+            padding: 15px;
+        }
+
+        /* ================= ITINERARY ================= */
+
+        .day-card {
+            background: white;
+            padding: 25px;
+            border-radius: 18px;
+            margin-bottom: 20px;
+            border: 1px solid #eee;
+            box-shadow:
+                0 5px 18px rgba(0,0,0,0.05);
+        }
+
+        .day-card h3 {
+            margin-bottom: 12px;
+            color: #222;
+        }
+
+        .day-card p {
+            color: #555;
+            line-height: 1.7;
+            margin-bottom: 10px;
+        }
+
+        /* ================= BUDGET ================= */
+
+        .budget-card {
+            background: white;
+            padding: 25px;
+            border-radius: 18px;
+            border: 1px solid #eee;
+        }
+
+        .budget-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 13px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .total-budget {
+            font-size: 22px;
+            font-weight: bold;
+            margin-top: 18px;
+            text-align: right;
+        }
+
+        /* ================= FOOTER ================= */
+
+        footer {
+            margin-top: 60px;
+            padding: 30px;
+            text-align: center;
+            background: #222;
+            color: white;
+        }
+
+        /* ================= RESPONSIVE ================= */
+
+        @media (max-width: 900px) {
+
+            .summary-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .forecast-grid {
+                grid-template-columns:
+                    repeat(4, 1fr);
+            }
+
+        }
+
+        @media (max-width: 768px) {
+
+            .hero h1 {
+                font-size: 32px;
+            }
+
+            .recommendation-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .forecast-grid {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+            .weather-details {
+                gap: 20px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- ================= NAVBAR ================= -->
+
+<nav class="navbar">
+
+    <div class="logo">
+        Trip<span>Genie</span>
+    </div>
+
+    <a href="/" class="nav-link">
+        Home
+    </a>
+
+</nav>
+
+
+<!-- ================= HERO ================= -->
+
+<section class="hero">
+
+    <h1>
+        Your Trip to {{ destination }} ✈️
+    </h1>
+
+    <p>
+        Your personalized travel plan is ready!
+    </p>
+
+</section>
+
+
+<div class="container">
+
+
+    <!-- ================= SUMMARY ================= -->
+
+    <section class="section">
+
+        <div class="summary-grid">
+
+            <div class="summary-card">
+                <h3>📍 Destination</h3>
+                <p>{{ destination }}</p>
+            </div>
+
+            <div class="summary-card">
+                <h3>📅 Duration</h3>
+                <p>{{ days }} Days</p>
+            </div>
+
+            <div class="summary-card">
+                <h3>👥 Travelers</h3>
+                <p>{{ travelers }}</p>
+            </div>
+
+            <div class="summary-card">
+                <h3>💰 Budget</h3>
+                <p>₹{{ budget }}</p>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= INTERESTS ================= -->
+
+    <section class="section">
+
+        <h2 class="section-title">
+            Your Interests
+        </h2>
+
+        <p class="section-subtitle">
+            TripGenie personalized this trip based on your interests.
+        </p>
+
+        <div class="interest-container">
+
+            {% if interests %}
+
+                {% for interest in interests %}
+
+                    <div class="interest">
+                        {% if interest == "beaches" %}
+                            🏖️ Beaches
+                        {% elif interest == "food" %}
+                            🍴 Food
+                        {% elif interest == "adventure" %}
+                            🧗 Adventure
+                        {% elif interest == "nature" %}
+                            🌳 Nature
+                        {% elif interest == "culture" %}
+                            🏛️ Culture
+                        {% elif interest == "shopping" %}
+                            🛍️ Shopping
+                        {% else %}
+                            {{ interest }}
+                        {% endif %}
+                    </div>
+
+                {% endfor %}
+
+            {% else %}
+
+                <div class="interest">
+                    🌎 General Exploration
+                </div>
+
+            {% endif %}
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= WEATHER ================= -->
+
+    <section class="section">
+
+        <h2 class="section-title">
+            🌤️ Destination Weather
+        </h2>
+
+        <p class="section-subtitle">
+            Current weather and 7-day forecast
+        </p>
+
+
+        <!-- CURRENT WEATHER -->
+
+        <div id="weather-card"
+             class="weather-card">
+
+            <div class="weather-loading">
+                🌤️ Loading current weather...
+            </div>
+
+        </div>
+
+
+        <!-- WEATHER TIP -->
+
+        <div id="weather-tip"
+             class="weather-tip">
+
+            💡 Preparing your travel tip...
+
+        </div>
+
+
+        <!-- FORECAST -->
+
+        <div class="forecast-container">
+
+            <h3 class="forecast-title">
+                📅 7-Day Forecast
+            </h3>
+
+            <div id="forecast-container"
+                 class="forecast-grid">
+
+                <div class="weather-loading">
+                    Loading forecast...
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= HOTELS & RESTAURANTS ================= -->
+
+    <section class="recommendations-section">
+
+        <h2 class="section-title">
+            🏨 Hotels & Restaurants
+        </h2>
+
+        <p class="section-subtitle">
+            Explore places near {{ destination }}
+        </p>
+
+
+        <div class="recommendation-grid">
+
+
+            <!-- HOTELS -->
+
+            <div class="recommendation-card">
+
+                <h3>
+                    🏨 Hotels
+                </h3>
+
+                <div id="hotel-list">
+
+                    <p class="loading-text">
+                        Finding hotels...
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- RESTAURANTS -->
+
+            <div class="recommendation-card">
+
+                <h3>
+                    🍴 Restaurants
+                </h3>
+
+                <div id="restaurant-list">
+
+                    <p class="loading-text">
+                        Finding restaurants...
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= MAP ================= -->
+
+    <section class="section">
+
+        <h2 class="section-title">
+            📍 Explore {{ destination }}
+        </h2>
+
+        <p class="section-subtitle">
+            Discover attractions and places around your destination.
+        </p>
+
+        <div id="map"></div>
+
+    </section>
+
+
+    <!-- ================= DAILY ITINERARY ================= -->
+
+    <section class="section">
+
+        <h2 class="section-title">
+            🗓️ Your Daily Itinerary
+        </h2>
+
+        <p class="section-subtitle">
+            A personalized plan for your trip
+        </p>
+
+
+        {% for day in itinerary %}
+
+        <div class="day-card">
+
+            <h3>
+                {{ day.title }}
+            </h3>
+
+            <p>
+                {{ day.description }}
+            </p>
+
+            <p>
+                <strong>📍 Places:</strong>
+                {{ day.places }}
+            </p>
+
+            <p>
+                <strong>💰 Estimated Cost:</strong>
+                ₹{{ day.cost }}
+            </p>
+
+        </div>
+
+        {% endfor %}
+
+    </section>
+
+
+    <!-- ================= BUDGET ================= -->
+
+    <section class="section">
+
+        <h2 class="section-title">
+            💰 Budget Breakdown
+        </h2>
+
+        <p class="section-subtitle">
+            Estimated spending for your trip
+        </p>
+
+
+        <div class="budget-card">
+
+            <div class="budget-row">
+                <span>🏨 Stay</span>
+                <strong>
+                    ₹{{ budget_breakdown.stay }}
+                </strong>
+            </div>
+
+            <div class="budget-row">
+                <span>🍴 Food</span>
+                <strong>
+                    ₹{{ budget_breakdown.food }}
+                </strong>
+            </div>
+
+            <div class="budget-row">
+                <span>🚗 Transport</span>
+                <strong>
+                    ₹{{ budget_breakdown.transport }}
+                </strong>
+            </div>
+
+            <div class="budget-row">
+                <span>🎟️ Activities</span>
+                <strong>
+                    ₹{{ budget_breakdown.activities }}
+                </strong>
+            </div>
+
+            <div class="budget-row">
+                <span>📦 Miscellaneous</span>
+                <strong>
+                    ₹{{ budget_breakdown.miscellaneous }}
+                </strong>
+            </div>
+
+            <div class="total-budget">
+                Total: ₹{{ total_cost }}
+            </div>
+
+        </div>
+
+    </section>
+
+
+</div>
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer>
+
+    <p>
+        © 2026 TripGenie AI — Plan smarter. Travel better. ✈️
+    </p>
+
+</footer>
+
+
+<!-- Leaflet JS -->
+
+<script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
+</script>
+
+
+<!-- ================= TRIP DATA ================= -->
+
+<script type="application/json"
+        id="trip-data">
+
+{
+    "destination": {{ destination | tojson }},
+    "interests": {{ interests | tojson }}
+}
+
+</script>
+
+
+<script>
+
+    /* ==========================================
+       READ TRIP DATA
+    ========================================== */
+
+    const tripData =
+        JSON.parse(
+            document.getElementById(
+                "trip-data"
+            ).textContent
+        );
+
+    const destination =
+        tripData.destination;
+
+    const selectedInterests =
+        tripData.interests || [];
+
+
+    /* ==========================================
+       WEATHER
+    ========================================== */
+
+    async function loadWeather() {
+
+        const weatherCard =
+            document.getElementById(
+                "weather-card"
+            );
+
+        const forecastContainer =
+            document.getElementById(
+                "forecast-container"
+            );
+
+        const weatherTip =
+            document.getElementById(
+                "weather-tip"
+            );
+
+
+        try {
+
+            const response =
+                await fetch(
+                    `/weather?destination=${encodeURIComponent(destination)}`
+                );
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "Weather request failed"
+                );
+
+            }
+
+
+            const data =
+                await response.json();
+
+
+            if (data.error) {
+
+                throw new Error(
+                    data.error
+                );
+
+            }
+
+
+            /* CURRENT WEATHER */
+
+            weatherCard.innerHTML = `
+
+                <div class="weather-main">
+
+                    🌤️ ${data.temperature}°C
+
+                </div>
+
+                <div class="weather-condition">
+
+                    ${data.condition}
+
+                </div>
+
+                <div class="weather-details">
+
+                    <div class="weather-detail">
+
+                        💧 Humidity:
+                        <strong>
+                            ${data.humidity}%
+                        </strong>
+
+                    </div>
+
+                    <div class="weather-detail">
+
+                        💨 Wind:
+                        <strong>
+                            ${data.wind_speed} km/h
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            `;
+
+
+            /* WEATHER TIP */
+
+            const condition =
+                data.condition.toLowerCase();
+
+
+            let tip;
+
+
+            if (
+                condition.includes("thunderstorm")
+            ) {
+
+                tip =
+                    "⛈️ Avoid outdoor activities during thunderstorms and stay safe indoors.";
+
+            }
+            else if (
+                condition.includes("rain") ||
+                condition.includes("drizzle")
+            ) {
+
+                tip =
+                    "🌧️ Carry an umbrella and consider indoor attractions.";
+
+            }
+            else if (
+                condition.includes("clear")
+            ) {
+
+                tip =
+                    "☀️ Great weather for sightseeing and outdoor activities!";
+
+            }
+            else if (
+                condition.includes("cloud")
+            ) {
+
+                tip =
+                    "☁️ Good weather for exploring the city comfortably.";
+
+            }
+            else {
+
+                tip =
+                    "🌤️ Check the forecast before planning outdoor activities.";
+
+            }
+
+
+            weatherTip.innerHTML =
+                "💡 " + tip;
+
+
+            /* 7-DAY FORECAST */
+
+            forecastContainer.innerHTML = "";
+
+
+            if (
+                !data.forecast ||
+                data.forecast.length === 0
+            ) {
+
+                forecastContainer.innerHTML =
+                    "<p>No forecast available.</p>";
+
+            }
+            else {
+
+                data.forecast.forEach(
+                    function(day) {
+
+                        const date =
+                            new Date(day.date);
+
+
+                        const dayName =
+                            date.toLocaleDateString(
+                                "en-US",
+                                {
+                                    weekday: "short"
+                                }
+                            );
+
+
+                        const card =
+                            document.createElement(
+                                "div"
+                            );
+
+
+                        card.className =
+                            "forecast-card";
+
+
+                        card.innerHTML = `
+
+                            <div class="forecast-day">
+                                ${dayName}
+                            </div>
+
+                            <div class="forecast-condition">
+                                ${day.condition}
+                            </div>
+
+                            <div class="forecast-temp">
+
+                                <span class="max-temp">
+                                    ${day.max}°C
+                                </span>
+
+                                <span class="min-temp">
+                                    ${day.min}°C
+                                </span>
+
+                            </div>
+
+                        `;
+
+
+                        forecastContainer.appendChild(
+                            card
+                        );
+
+                    }
+                );
+
+            }
+
+
+        }
+        catch (error) {
+
+            console.error(
+                "Weather error:",
+                error
+            );
+
+
+            weatherCard.innerHTML = `
+
+                <div class="weather-error">
+
+                    ❌ Unable to load weather.
+
+                    <br><br>
+
+                    Please check your internet connection
+                    and try again.
+
+                </div>
+
+            `;
+
+
+            forecastContainer.innerHTML =
+                "<p>Forecast unavailable.</p>";
+
+
+            weatherTip.innerHTML =
+                "💡 Weather information is currently unavailable.";
+
+        }
+
+    }
+
+
+    /* ==========================================
+       MAP
+    ========================================== */
+
+    const map =
+        L.map("map").setView(
+            [20, 0],
+            2
+        );
+
+
+    L.tileLayer(
+        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+        {
+
+            attribution:
+                "&copy; OpenStreetMap contributors"
+
+        }
+    ).addTo(map);
+
+
+    /* ==========================================
+       DESTINATION
+    ========================================== */
+
+    async function searchDestination() {
+
+        try {
+
+            const response =
+                await fetch(
+                    `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(destination)}&limit=1`
+                );
+
+
+            const places =
+                await response.json();
+
+
+            if (!places.length) {
+
+                console.log(
+                    "Destination not found"
+                );
+
+                return;
+
+            }
+
+
+            const latitude =
+                parseFloat(
+                    places[0].lat
+                );
+
+
+            const longitude =
+                parseFloat(
+                    places[0].lon
+                );
+
+
+            map.setView(
+                [
+                    latitude,
+                    longitude
+                ],
+                12
+            );
+
+
+            L.marker(
+                [
+                    latitude,
+                    longitude
+                ]
+            )
+            .addTo(map)
+            .bindPopup(
+                `<b>📍 ${destination}</b>`
+            )
+            .openPopup();
+
+
+            searchInterestPlaces(
+                latitude,
+                longitude
+            );
+
+
+        }
+        catch (error) {
+
+            console.error(
+                "Destination map error:",
+                error
+            );
+
+        }
+
+    }
+
+
+    /* ==========================================
+       INTEREST PLACES
+    ========================================== */
+
+    async function searchInterestPlaces(
+        latitude,
+        longitude
+    ) {
+
+        const interestMap = {
+
+            beaches: "beach",
+            food: "restaurant",
+            adventure: "adventure",
+            nature: "park",
+            culture: "museum",
+            shopping: "shopping"
+
+        };
+
+
+        for (
+            const interest
+            of selectedInterests
+        ) {
+
+            const searchTerm =
+                interestMap[interest];
+
+
+            if (!searchTerm) {
+                continue;
+            }
+
+
+            try {
+
+                const query =
+                    `${searchTerm} near ${destination}`;
+
+
+                const response =
+                    await fetch(
+                        `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&limit=5`
+                    );
+
+
+                const places =
+                    await response.json();
+
+
+                places.forEach(
+                    function(place) {
+
+                        const placeLat =
+                            parseFloat(
+                                place.lat
+                            );
+
+
+                        const placeLon =
+                            parseFloat(
+                                place.lon
+                            );
+
+
+                        L.marker(
+                            [
+                                placeLat,
+                                placeLon
+                            ]
+                        )
+                        .addTo(map)
+                        .bindPopup(`
+
+                            <b>
+                                📍
+                                ${place.display_name}
+                            </b>
+
+                            <br>
+
+                            <small>
+                                ${interest}
+                            </small>
+
+                        `);
+
+                    }
+                );
+
+
+            }
+            catch (error) {
+
+                console.error(
+                    "Interest search error:",
+                    error
+                );
+
+            }
+
+        }
+
+    }
+
+
+    /* ==========================================
+       HOTELS & RESTAURANTS
+    ========================================== */
+
+    async function loadRecommendations() {
+
+        const hotelList =
+            document.getElementById(
+                "hotel-list"
+            );
+
+
+        const restaurantList =
+            document.getElementById(
+                "restaurant-list"
+            );
+
+
+        try {
+
+            /* ================= HOTELS ================= */
+
+            const hotelResponse =
+                await fetch(
+                    `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
+                        "hotels in " + destination
+                    )}&limit=5`
+                );
+
+
+            if (!hotelResponse.ok) {
+
+                throw new Error(
+                    "Hotel request failed"
+                );
+
+            }
+
+
+            const hotels =
+                await hotelResponse.json();
+
+
+            hotelList.innerHTML = "";
+
+
+            if (hotels.length === 0) {
+
+                hotelList.innerHTML =
+                    "<p>No hotels found.</p>";
+
+            }
+            else {
+
+                hotels.forEach(
+                    function(hotel) {
+
+                        const item =
+                            document.createElement(
+                                "div"
+                            );
+
+
+                        item.className =
+                            "place-item";
+
+
+                        const name =
+                            hotel.display_name
+                                .split(",")[0];
+
+
+                        item.innerHTML = `
+
+                            <strong>
+                                🏨 ${name}
+                            </strong>
+
+                            <span class="place-address">
+                                ${hotel.display_name}
+                            </span>
+
+                        `;
+
+
+                        item.addEventListener(
+                            "click",
+                            function() {
+
+                                const lat =
+                                    parseFloat(
+                                        hotel.lat
+                                    );
+
+                                const lon =
+                                    parseFloat(
+                                        hotel.lon
+                                    );
+
+
+                                map.setView(
+                                    [
+                                        lat,
+                                        lon
+                                    ],
+                                    16
+                                );
+
+
+                                L.marker(
+                                    [
+                                        lat,
+                                        lon
+                                    ]
+                                )
+                                .addTo(map)
+                                .bindPopup(
+                                    `<b>🏨 ${name}</b>`
+                                )
+                                .openPopup();
+
+
+                                document
+                                    .getElementById(
+                                        "map"
+                                    )
+                                    .scrollIntoView({
+                                        behavior:
+                                            "smooth"
+                                    });
+
+                            }
+                        );
+
+
+                        hotelList.appendChild(
+                            item
+                        );
+
+                    }
+                );
+
+            }
+
+
+            /* ================= RESTAURANTS ================= */
+
+            const restaurantResponse =
+                await fetch(
+                    `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
+                        "restaurants in " + destination
+                    )}&limit=5`
+                );
+
+
+            if (!restaurantResponse.ok) {
+
+                throw new Error(
+                    "Restaurant request failed"
+                );
+
+            }
+
+
+            const restaurants =
+                await restaurantResponse.json();
+
+
+            restaurantList.innerHTML = "";
+
+
+            if (restaurants.length === 0) {
+
+                restaurantList.innerHTML =
+                    "<p>No restaurants found.</p>";
+
+            }
+            else {
+
+                restaurants.forEach(
+                    function(restaurant) {
+
+                        const item =
+                            document.createElement(
+                                "div"
+                            );
+
+
+                        item.className =
+                            "place-item";
+
+
+                        const name =
+                            restaurant.display_name
+                                .split(",")[0];
+
+
+                        item.innerHTML = `
+
+                            <strong>
+                                🍴 ${name}
+                            </strong>
+
+                            <span class="place-address">
+                                ${restaurant.display_name}
+                            </span>
+
+                        `;
+
+
+                        item.addEventListener(
+                            "click",
+                            function() {
+
+                                const lat =
+                                    parseFloat(
+                                        restaurant.lat
+                                    );
+
+
+                                const lon =
+                                    parseFloat(
+                                        restaurant.lon
+                                    );
+
+
+                                map.setView(
+                                    [
+                                        lat,
+                                        lon
+                                    ],
+                                    16
+                                );
+
+
+                                L.marker(
+                                    [
+                                        lat,
+                                        lon
+                                    ]
+                                )
+                                .addTo(map)
+                                .bindPopup(
+                                    `<b>🍴 ${name}</b>`
+                                )
+                                .openPopup();
+
+
+                                document
+                                    .getElementById(
+                                        "map"
+                                    )
+                                    .scrollIntoView({
+                                        behavior:
+                                            "smooth"
+                                    });
+
+                            }
+                        );
+
+
+                        restaurantList.appendChild(
+                            item
+                        );
+
+                    }
+                );
+
+            }
+
+
+        }
+        catch (error) {
+
+            console.error(
+                "Recommendation error:",
+                error
+            );
+
+
+            hotelList.innerHTML =
+                `<p class="error-text">
+                    ❌ Unable to load hotels.
+                </p>`;
+
+
+            restaurantList.innerHTML =
+                `<p class="error-text">
+                    ❌ Unable to load restaurants.
+                </p>`;
+
+        }
+
+    }
+
+
+    /* ==========================================
+       START EVERYTHING
+    ========================================== */
+
+    loadWeather();
+
+    searchDestination();
+
+    loadRecommendations();
+
+</script>
+
+
+</body>
+
+</html>

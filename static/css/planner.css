@@ -1,0 +1,226 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f7f9fc;
+    color: #17202a;
+}
+
+
+/* NAVBAR */
+
+.navbar {
+    height: 70px;
+
+    padding: 0 8%;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    background: white;
+
+    border-bottom: 1px solid #eee;
+}
+
+.logo {
+    font-size: 23px;
+    font-weight: bold;
+}
+
+.logo span {
+    color: #ff6b35;
+}
+
+.back-btn {
+    text-decoration: none;
+    color: #333;
+}
+
+
+/* MAIN */
+
+.planner-container {
+    width: 90%;
+    max-width: 850px;
+
+    margin: 60px auto;
+}
+
+
+/* HEADER */
+
+.planner-header {
+    text-align: center;
+
+    margin-bottom: 40px;
+}
+
+.planner-header p {
+    color: #ff6b35;
+
+    font-size: 13px;
+
+    font-weight: bold;
+
+    letter-spacing: 2px;
+
+    margin-bottom: 12px;
+}
+
+.planner-header h1 {
+    font-size: 42px;
+
+    margin-bottom: 15px;
+}
+
+.planner-header span {
+    color: #68717b;
+
+    font-size: 17px;
+}
+
+
+/* FORM */
+
+.planner-form {
+    background: white;
+
+    padding: 40px;
+
+    border-radius: 25px;
+
+    box-shadow: 0 15px 40px rgba(0,0,0,0.08);
+}
+
+.form-group {
+    margin-bottom: 25px;
+}
+
+.form-group > label {
+    display: block;
+
+    font-weight: bold;
+
+    margin-bottom: 10px;
+}
+
+input,
+select {
+    width: 100%;
+
+    padding: 15px;
+
+    border: 1px solid #ddd;
+
+    border-radius: 12px;
+
+    font-size: 15px;
+
+    outline: none;
+}
+
+input:focus,
+select:focus {
+    border-color: #ff6b35;
+}
+
+
+/* TWO COLUMNS */
+
+.form-row {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 20px;
+}
+
+
+/* INTERESTS */
+
+.interest-grid {
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 12px;
+}
+
+.interest {
+    padding: 15px;
+
+    border: 1px solid #ddd;
+
+    border-radius: 12px;
+
+    cursor: pointer;
+
+    text-align: center;
+}
+
+.interest:hover {
+    border-color: #ff6b35;
+}
+
+.interest input {
+    width: auto;
+
+    margin-right: 5px;
+}
+
+
+/* BUTTON */
+
+.generate-btn {
+    width: 100%;
+
+    padding: 17px;
+
+    border: none;
+
+    border-radius: 30px;
+
+    background: #ff6b35;
+
+    color: white;
+
+    font-size: 17px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    margin-top: 10px;
+}
+
+.generate-btn:hover {
+    opacity: 0.9;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 650px) {
+
+    .planner-form {
+        padding: 25px;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+
+    .interest-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .planner-header h1 {
+        font-size: 32px;
+    }
+}
